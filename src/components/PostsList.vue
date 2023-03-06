@@ -2,6 +2,7 @@
 import { ref, watch } from "vue";
 import axios from "axios";
 import PaginationButtons from "./PaginationButtons.vue";
+import SearchBox from "./SearchBox.vue";
 
 const input = ref("");
 
@@ -38,7 +39,7 @@ watch(
     (posts.value = posts.value.filter((item) =>
       item.title.toLowerCase().includes(input.value.toLowerCase())
     ))
-);
+), {immediate: true};
 
 const isAscending = ref(true);
 
@@ -54,10 +55,7 @@ watch(isAscending, () => {
 </script>
 
 <template>
-  <div class="search">
-    <h2 class="search__title">Find anything you want!</h2>
-    <input type="text" v-model.trim="input" />
-  </div>
+  <SearchBox v-model:input.trim="input"/>
   <select name="sort" @click="selectOptions">
     <option value="id">Id</option>
     <option value="title">Title</option>
