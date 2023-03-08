@@ -45,7 +45,10 @@ const isAscending = ref(true);
 
 const attr = ref("id");
 
-const selectOptions = (e) => attr.value = e.target.value;
+const selectOptions = (e) => {
+  attr.value = e.target.value
+  isAscending.value = !isAscending.value
+};
 
 watch(isAscending, () => {
   isAscending.value === true
@@ -56,13 +59,11 @@ watch(isAscending, () => {
 
 <template>
   <SearchBox v-model:input.trim="input"/>
-  <select name="sort" @click="selectOptions">
-    <option value="id">Id</option>
-    <option value="title">Title</option>
-    <option value="body">Body</option>
-  </select>
-  <button v-if="isAscending" @click="isAscending = !isAscending">⬆</button>
-  <button v-else @click="isAscending = !isAscending">⬇</button>
+  <div name="sort" @click="selectOptions">
+    <button value="id">Id</button>
+    <button value="title">Title</button>
+    <button value="body">Body</button>
+  </div>
   <div class="post" v-for="post in posts" :key="post.id">
     <div class="post__info">
       <div class="post__info_image">
