@@ -5,24 +5,22 @@
 
 <template>
   <div class="wrapper">
-    <header>
+    <nav>
       
-    </header>
+    </nav>
   
     <main>
       <div class="posts">
-      <Suspense>
-        <PostsList />
-        <template #fallback>
-          Loading...
-        </template>
-      </Suspense>
-      
-        
+        <Suspense>
+          <PostsList />
+          <template #fallback>
+            Loading...
+          </template>
+        </Suspense>
       </div>
       
     </main>
-  </div>
+   </div>
 </template>
 
 <style scoped>
