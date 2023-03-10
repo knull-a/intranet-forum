@@ -1,0 +1,15 @@
+.btn {
+    padding: 8px 16px;
+    border-radius: 444px;
+    background-color: transparent;
+    color: #fff;
+
+    img {
+        transform: translateY(2px);
+        margin-right: 3px;
+    }
+
+    &.active {
+        background-color: var(--tertiary);
+    }
+}
