@@ -4,23 +4,9 @@
 </script>
 
 <template>
-  <div class="wrapper">
-    <nav>
-      
-    </nav>
-  
-    <main>
-      <div class="posts">
-        <Suspense>
-          <PostsList />
-          <template #fallback>
-            Loading...
-          </template>
-        </Suspense>
-      </div>
-      
-    </main>
-   </div>
+    <div class="wrapper">
+      <PostsList />
+    </div>
 </template>
 
 <style scoped>

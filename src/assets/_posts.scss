@@ -1,4 +1,5 @@
 .posts {
+    
     &__header {
         display: flex;
         justify-content: space-between;
@@ -55,17 +56,38 @@
     
 
     .post {
+        max-width: 590px;
+        display: flex;
+        justify-content: space-between;
         &__info {
             display: flex;
             
             &_image {
                 padding-right: 10px;
+                img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 444px;
+                    object-fit: cover;
+                }
             }
 
             &_text {
 
             }
 
+        }
+
+        &__likes {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--secondary);
+            &-btn {
+                padding: 0;
+                color: var(--secondary);
+                // background-color: #fff;
+            }
         }
         &__user-id {
         }
