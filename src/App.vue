@@ -1,26 +1,27 @@
 <script setup>
   import PostsList from './components/PostsList.vue'
+  import NavBarMenu from './components/NavBarMenu.vue';
   
 </script>
 
 <template>
-  <div class="wrapper">
-    <nav>
-      
-    </nav>
+    <header class="header">
+      <NavBarMenu />
+    </header>
   
-    <main>
-      <div class="posts">
-        <Suspense>
-          <PostsList />
-          <template #fallback>
-            Loading...
-          </template>
-        </Suspense>
-      </div>
-      
-    </main>
-   </div>
+    <div class="wrapper">
+      <main>
+        <div class="posts">
+          <Suspense>
+            <PostsList />
+            <template #fallback>
+              Loading...
+            </template>
+          </Suspense>
+        </div>
+        
+      </main>
+    </div>
 </template>
 
 <style scoped>

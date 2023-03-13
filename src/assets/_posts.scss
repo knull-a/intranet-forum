@@ -55,6 +55,8 @@
     
 
     .post {
+        display: flex;
+        justify-content: space-between;
         &__info {
             display: flex;
             
@@ -66,6 +68,18 @@
 
             }
 
+        }
+
+        &__likes {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--secondary);
+            &-btn {
+                padding: 0;
+                color: var(--secondary);
+                // background-color: #fff;
+            }
         }
         &__user-id {
         }
