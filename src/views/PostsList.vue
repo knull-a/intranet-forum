@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, onMounted } from "vue";
 import NavbarMenu from "../components/NavbarMenu.vue";
 import { RouterLink } from "vue-router";
 import PostView from "./PostView.vue";
@@ -14,6 +14,16 @@ watch(isHotSorted, () => {
 );
 
 const posts = ref([]);
+
+
+
+watch(posts, (userVal) => {
+  localStorage.setItem("posts", JSON.stringify(userVal))
+}, {deep: true})
+
+onMounted(() => {
+  posts.value = JSON.parse(localStorage.getItem("posts")) || []
+})
 
 const isPopupOpened = ref(false);
 
