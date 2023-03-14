@@ -1,7 +1,8 @@
 <script setup>
 import { ref, watch, computed } from "vue";
-import NavbarMenu from "./NavbarMenu.vue";
-import UserProfile from "./UserProfile.vue";
+import NavbarMenu from "../components/NavbarMenu.vue";
+import { RouterLink } from "vue-router";
+import PostView from "./PostView.vue";
 
 const isHotSorted = ref(false);
 
@@ -11,7 +12,7 @@ watch(isHotSorted, () => {
   : posts.value.sort((a, b) => b.id - a.id)
 }
 );
-const likes = ref(0);
+
 const posts = ref([]);
 
 const isPopupOpened = ref(false);
@@ -23,7 +24,7 @@ function addPost() {
     title: title.value,
     body: body.value,
     date: new Date().toLocaleString(),
-    id: Number(new Date()),
+    id: id.value++,
     likes: likes.value,
   });
   title.value = "";
@@ -33,12 +34,16 @@ function addPost() {
   
 }
 
-const removePost = (id) =>
-  (posts.value = posts.value.filter((post) => post.id != id));
+const removePost = (id) => {
+  (posts.value = posts.value.filter((post) => post.id != id))
+  console.log('deleted');
+}
 
 const title = ref("");
 const body = ref("");
 const isActive = ref(false);
+const likes = ref(0);
+const id = ref(0);
 
 const username = ref("Username")
 
@@ -58,6 +63,8 @@ const onFileChange = (e) => {
   console.log(props.mageUrl);
   props.imageUrl = URL.createObjectURL(file)
 }
+
+console.log(posts.value);
 
 </script>
 
@@ -108,7 +115,7 @@ const onFileChange = (e) => {
       <div class="posts__post post" v-if="!posts.length">There are no posts...</div>
       <template v-else>
         <TransitionGroup name="list">
-          <div class="posts__post post" v-for="post in posts" :key="post.id">
+          <RouterLink :to="`/post/${post.id}`" class="posts__post post" v-for="post in posts" :key="post.id">
             <div class="post__info">
               <div class="post__info_image">
                 <img :src="imageUrl" alt="">
@@ -129,12 +136,14 @@ const onFileChange = (e) => {
               <p></p>
               <button class="btn post__likes-btn" @click="post.likes--">▼</button>
             </div>
-          </div>
+          </RouterLink>
         </TransitionGroup>
       </template>
+
     </div>
   </main>
-  <UserProfile />
+
+  <!-- <PostView :posts="posts" /> -->
 </template>
 
 <style scoped>

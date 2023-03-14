@@ -1,11 +1,10 @@
 <script setup>
-  import PostsList from './components/PostsList.vue'
-  
+  import { RouterView } from 'vue-router';
 </script>
 
 <template>
     <div class="wrapper">
-      <PostsList />
+      <RouterView />
     </div>
 </template>
 
