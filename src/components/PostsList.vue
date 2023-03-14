@@ -1,21 +1,7 @@
 <script setup>
 import { ref, watch, computed } from "vue";
 import NavbarMenu from "./NavbarMenu.vue";
-
-const selectOptions = (e) => {
-  attr.value = e.target.value;
-  isAscending.value = !isAscending.value;
-};
-
-const isAscending = ref(true);
-
-const attr = ref("id");
-
-// watch(isAscending, () => {
-//   isAscending.value === true
-//     ? posts.value.sort((a, b) => (a[attr.value] < b[attr.value] ? -1 : 1))
-//     : posts.value.sort((a, b) => (a[attr.value] > b[attr.value] ? -1 : 1));
-// });
+import UserProfile from "./UserProfile.vue";
 
 const isHotSorted = ref(false);
 
@@ -25,25 +11,26 @@ watch(isHotSorted, () => {
   : posts.value.sort((a, b) => b.id - a.id)
 }
 );
-
-
+const likes = ref(0);
 const posts = ref([]);
 
 const isPopupOpened = ref(false);
 
 function addPost() {
-  posts.value.unshift({
+  if (!title.value.length || !body.value.length) alert("Post is empty!")
+  else {
+    posts.value.unshift({
     title: title.value,
     body: body.value,
     date: new Date().toLocaleString(),
     id: Number(new Date()),
     likes: likes.value,
-    username: username.value
   });
   title.value = "";
   body.value = "";
   isPopupOpened.value = false;
-  console.log(posts.value);
+  }
+  
 }
 
 const removePost = (id) =>
@@ -52,27 +39,36 @@ const removePost = (id) =>
 const title = ref("");
 const body = ref("");
 const isActive = ref(false);
-const likes = ref(0);
-const username = ref("hehe")
 
-const postImage = "/src/assets/img/horse.jpg"
+const username = ref("Username")
+
+const sumOfLikes = computed(() => posts.value.reduce((acc, curr) => acc + curr.likes, 0))
 
 const sortPosts = () => {
   isActive.value = !isActive.value;
   isHotSorted.value = !isHotSorted.value;
-  console.log(isHotSorted.value);
 };
-
 
 const imageUrl = ref("/src/assets/img/profile-pic.jpg")
 
-
+// todo: fix e.target === undefined
+const onFileChange = (e) => {
+  console.log(e);
+  const file = e.target.files[0]
+  console.log(props.mageUrl);
+  props.imageUrl = URL.createObjectURL(file)
+}
 
 </script>
 
 <template>
   <header class="header">
-    <NavbarMenu @on-file-change="onFileChange" :image-url="imageUrl"/>
+    <NavbarMenu 
+     :image-url="imageUrl"
+     :sum-of-likes="sumOfLikes"
+     @on-file-change="onFileChange"
+     v-model="username"
+    />
   </header>
   <main>
     <div class="posts">
@@ -118,7 +114,7 @@ const imageUrl = ref("/src/assets/img/profile-pic.jpg")
                 <img :src="imageUrl" alt="">
               </div>
               <div class="post__info_text">
-                <p>{{ post.username }}</p>
+                <p>{{ username }}</p>
                 <span class="post__id"> {{ post.date }}</span>
                 <h2 class="post__title">{{ post.title }}</h2>
                 <p class="post__body">
@@ -130,6 +126,7 @@ const imageUrl = ref("/src/assets/img/profile-pic.jpg")
             <div class="post__likes">
               <button class="btn post__likes-btn" @click="post.likes++">▲</button>
               <p>{{ post.likes }}</p>
+              <p></p>
               <button class="btn post__likes-btn" @click="post.likes--">▼</button>
             </div>
           </div>
@@ -137,8 +134,7 @@ const imageUrl = ref("/src/assets/img/profile-pic.jpg")
       </template>
     </div>
   </main>
-
-  <PaginationButtons @increase-page="increasePage" @reduce-page="reducePage" />
+  <UserProfile />
 </template>
 
 <style scoped>
