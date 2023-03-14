@@ -1,5 +1,6 @@
 .posts {
-    
+    width: 100%;
+    max-width: 590px;
     &__header {
         display: flex;
         justify-content: space-between;
@@ -56,11 +57,12 @@
     
 
     .post {
-        max-width: 590px;
         display: flex;
         justify-content: space-between;
+      
         &__info {
             display: flex;
+            
             
             &_image {
                 padding-right: 10px;
@@ -73,7 +75,9 @@
             }
 
             &_text {
-
+                word-wrap: break-word;
+                max-width: 590px;
+                width: 100%;
             }
 
         }
@@ -94,6 +98,7 @@
         &__id {
         }
         &__title {
+            
         }
         &__body {
         }
