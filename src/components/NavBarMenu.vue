@@ -12,7 +12,6 @@ function handleFileChange(e) {
     emit("fileSelected", file.value)
 }
 
-
 </script>
 
 <template>

@@ -1,8 +1,7 @@
 <script setup>
 import { ref, watch, computed, onMounted } from "vue";
-import NavbarMenu from "../components/NavbarMenu.vue";
 import { RouterLink } from "vue-router";
-import {v4 as uuidv4} from "uuid"
+import NavbarMenu from "../components/NavbarMenu.vue";
 
 const isHotSorted = ref(false);
 
@@ -14,54 +13,76 @@ const title = ref("");
 const body = ref("");
 const isActive = ref(false);
 const likes = ref(0);
-const username = ref("Username")
+const username = ref("Username");
 
-watch(isHotSorted, () => 
-  isHotSorted.value === true
-  ? posts.value.sort((a, b) => b.likes - a.likes)
-  : posts.value.sort((a, b) => b.id - a.id)
+const imageUrl = ref("/src/assets/img/profile-pic.jpg");
+
+
+watch(
+  posts,
+  (userVal) => localStorage.setItem("posts", JSON.stringify(userVal)),
+  { deep: true }
 );
 
-watch(posts, (userVal) => localStorage.setItem("posts", JSON.stringify(userVal)), {deep: true})
+watch(
+  imageUrl,
+  (userVal) => localStorage.setItem("imageUrl", JSON.stringify(userVal)),
+  { deep: true }
+);
 
-onMounted(() => posts.value = JSON.parse(localStorage.getItem("posts")) || [])
+onMounted(
+  () => (posts.value = JSON.parse(localStorage.getItem("posts")) || [])
+);
+
+onMounted(
+  () => (imageUrl.value = JSON.parse(localStorage.getItem("imageUrl")) || '/src/assets/img/profile-pic.jpg')
+);
 
 function addPost() {
-  if (!title.value.length || !body.value.length) alert("Post is empty!")
+  if (!title.value.length || !body.value.length) alert("Post is empty!");
   else {
     posts.value.unshift({
-    title: title.value,
-    body: body.value,
-    date: new Date().toLocaleString(),
-    id: uuidv4(),
-    likes: likes.value,
-  });
-  title.value = "";
-  body.value = "";
-  isPopupOpened.value = false;
+      title: title.value,
+      body: body.value,
+      date: new Date().toLocaleString(),
+      id: Number(Date.now()),
+      likes: likes.value,
+    });
+    title.value = "";
+    body.value = "";
+    isPopupOpened.value = false;
   }
-  
 }
 
-const removePost = (id) => (posts.value = posts.value.filter((post) => post.id != id))
+watch(isHotSorted, () =>
+  isHotSorted.value === true
+    ? posts.value.sort((a, b) => b.likes - a.likes)
+    : posts.value.sort((a, b) => b.id - a.id)
+);
 
-const sumOfLikes = computed(() => posts.value.reduce((acc, curr) => acc + curr.likes, 0))
+const removePost = (id) =>
+  (posts.value = posts.value.filter((post) => post.id != id));
 
-const sortPosts = () => [isActive.value, isHotSorted.value] = [!isActive.value, !isHotSorted.value];
+const sumOfLikes = computed(() =>
+  posts.value.reduce((acc, curr) => acc + curr.likes, 0)
+);
 
-const imageUrl = ref("/src/assets/img/profile-pic.jpg")
+const sortPosts = () =>
+  ([isActive.value, isHotSorted.value] = [!isActive.value, !isHotSorted.value]);
 
-const handleFileSelector = (file) => imageUrl.value = URL.createObjectURL(file)
+const handleFileSelector = (file) =>
+  (imageUrl.value = URL.createObjectURL(file));
 
+console.log(imageUrl.value);
 </script>
 
 <template>
   <header class="header">
-    <NavbarMenu 
-     :image-url="imageUrl"
-     :sum-of-likes="sumOfLikes"
-     @file-selected="handleFileSelector"
-     v-model="username"
+    <NavbarMenu
+      :image-url="imageUrl"
+      :sum-of-likes="sumOfLikes"
+      @file-selected="handleFileSelector"
+      v-model="username"
     />
   </header>
   <main>
@@ -99,13 +120,15 @@ const handleFileSelector = (file) => imageUrl.value = URL.createObjectURL(file)
           </div>
         </div>
       </div>
-      <div class="posts__post post" v-if="!posts.length">There are no posts...</div>
+      <div class="posts__post post" v-if="!posts.length">
+        There are no posts...
+      </div>
       <template v-else>
         <TransitionGroup name="list">
           <div class="posts__post post" v-for="post in posts" :key="post.id">
-            <RouterLink :to="`/post/${post.id}`"  class="post__info">
+            <RouterLink :to="`/post/${post.id}`" class="post__info">
               <div class="post__info_image">
-                <img :src="imageUrl" alt="">
+                <img :src="imageUrl" alt="" />
               </div>
               <div class="post__info_text">
                 <p>{{ username }}</p>
@@ -118,24 +141,25 @@ const handleFileSelector = (file) => imageUrl.value = URL.createObjectURL(file)
               </div>
             </RouterLink>
             <div class="post__likes">
-              <button class="btn post__likes-btn" @click="post.likes++">▲</button>
+              <button class="btn post__likes-btn" @click="post.likes++">
+                ▲
+              </button>
               <p>{{ post.likes }}</p>
               <p></p>
-              <button class="btn post__likes-btn" @click="post.likes--">▼</button>
+              <button class="btn post__likes-btn" @click="post.likes--">
+                ▼
+              </button>
             </div>
           </div>
         </TransitionGroup>
       </template>
-
     </div>
   </main>
-
-  <!-- <PostView :posts="posts" /> -->
 </template>
 
 <style scoped>
 .list-move,
-/* apply transition to moving elements */
+
 .list-enter-active,
 .list-leave-active {
   transition: all 0.35s ease;
@@ -147,8 +171,6 @@ const handleFileSelector = (file) => imageUrl.value = URL.createObjectURL(file)
   transform: translateX(20px);
 }
 
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
 .list-leave-active {
   position: absolute;
 }

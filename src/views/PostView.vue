@@ -1,16 +1,17 @@
 <script setup>
-    import { useRoute, RouterLink } from 'vue-router';
+    import { useRoute } from 'vue-router';
     import NavbarMenu from '../components/NavbarMenu.vue';
-    // defineProps({
-    //     "posts": Array
-    // })
     const route = useRoute()
     const posts = JSON.parse(localStorage.getItem("posts")) || []
+    const imageUrl = JSON.parse(localStorage.getItem("imageUrl"))
+    console.log(imageUrl);
     const post = posts.find(el => el.id == route.params.id)
 </script>
 
 <template>
-    <NavbarMenu />
+    <header class="header">
+        <NavbarMenu :image-url="imageUrl" />
+    </header>
     <div class="post">
         <div class="post__info">
             <div class="post__info_image">
@@ -29,7 +30,6 @@
         <div class="post__likes">
           <button class="btn post__likes-btn" @click="post.likes++">▲</button>
           <p>{{ post.likes }}</p>
-          <p></p>
           <button class="btn post__likes-btn" @click="post.likes--">▼</button>
         </div>
         <!-- <RouterLink to="/">Go back</RouterLink> -->
