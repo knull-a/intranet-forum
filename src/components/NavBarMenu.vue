@@ -1,16 +1,25 @@
 <script setup>
 import { ref } from 'vue';
-const props = defineProps(["imageUrl", "modelValue", "sumOfLikes"])
-const emit = defineEmits(["onFileChange", "update:modelValue"])
+const emit = defineEmits(["onFileChange", "update:modelValue", "fileSelected"])
+const props = defineProps(["modelValue", "imageUrl", "sumOfLikes"])
+
+const file = ref(null)
 
 const isProfileOpened = ref(false)
+
+function handleFileChange(e) {
+    file.value = e.target.files[0]
+    emit("fileSelected", file.value)
+}
+
+
 </script>
 
 <template>
     <div class="header__logo">  
         <img src="../assets/img/logo.svg" alt="Logo">
     </div>
-    <input type="file" id="profile-pic" @change="$emit('onFileChange')" hidden>
+    <input type="file" id="profile-pic" @change="handleFileChange" hidden>
     <div class="header__profile" @mouseover="isProfileOpened = true" @mouseleave="isProfileOpened = false" >
         <label for="profile-pic" class="header__profile-photo">
             <img :src="props.imageUrl" alt="Profile">

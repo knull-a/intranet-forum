@@ -43,10 +43,7 @@ function addPost() {
   
 }
 
-const removePost = (id) => {
-  (posts.value = posts.value.filter((post) => post.id != id))
-  console.log('deleted');
-}
+const removePost = (id) => (posts.value = posts.value.filter((post) => post.id != id))
 
 const sumOfLikes = computed(() => posts.value.reduce((acc, curr) => acc + curr.likes, 0))
 
@@ -54,13 +51,7 @@ const sortPosts = () => [isActive.value, isHotSorted.value] = [!isActive.value, 
 
 const imageUrl = ref("/src/assets/img/profile-pic.jpg")
 
-// todo: fix e.target === undefined
-const onFileChange = (e) => {
-  console.log(e);
-  const file = e.target.files[0]
-  console.log(props.mageUrl);
-  props.imageUrl = URL.createObjectURL(file)
-}
+const handleFileSelector = (file) => imageUrl.value = URL.createObjectURL(file)
 
 </script>
 
@@ -69,7 +60,7 @@ const onFileChange = (e) => {
     <NavbarMenu 
      :image-url="imageUrl"
      :sum-of-likes="sumOfLikes"
-     @on-file-change="onFileChange"
+     @file-selected="handleFileSelector"
      v-model="username"
     />
   </header>
