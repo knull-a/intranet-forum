@@ -2,7 +2,7 @@
 import { ref, watch, computed, onMounted } from "vue";
 import NavbarMenu from "../components/NavbarMenu.vue";
 import { RouterLink } from "vue-router";
-import PostView from "./PostView.vue";
+import {v4 as uuidv4} from "uuid"
 
 const isHotSorted = ref(false);
 
@@ -33,7 +33,7 @@ function addPost() {
     title: title.value,
     body: body.value,
     date: new Date().toLocaleString(),
-    id: Number(new Date()),
+    id: uuidv4(),
     likes: likes.value,
   });
   title.value = "";
