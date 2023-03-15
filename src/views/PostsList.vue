@@ -6,26 +6,25 @@ import PostView from "./PostView.vue";
 
 const isHotSorted = ref(false);
 
-watch(isHotSorted, () => {
-  isHotSorted.value === true
-  ? posts.value.sort((a, b) => b.likes - a.likes)
-  : posts.value.sort((a, b) => b.id - a.id)
-}
-);
+const isPopupOpened = ref(false);
 
 const posts = ref([]);
 
+const title = ref("");
+const body = ref("");
+const isActive = ref(false);
+const likes = ref(0);
+const username = ref("Username")
 
+watch(isHotSorted, () => 
+  isHotSorted.value === true
+  ? posts.value.sort((a, b) => b.likes - a.likes)
+  : posts.value.sort((a, b) => b.id - a.id)
+);
 
-watch(posts, (userVal) => {
-  localStorage.setItem("posts", JSON.stringify(userVal))
-}, {deep: true})
+watch(posts, (userVal) => localStorage.setItem("posts", JSON.stringify(userVal)), {deep: true})
 
-onMounted(() => {
-  posts.value = JSON.parse(localStorage.getItem("posts")) || []
-})
-
-const isPopupOpened = ref(false);
+onMounted(() => posts.value = JSON.parse(localStorage.getItem("posts")) || [])
 
 function addPost() {
   if (!title.value.length || !body.value.length) alert("Post is empty!")
@@ -34,7 +33,7 @@ function addPost() {
     title: title.value,
     body: body.value,
     date: new Date().toLocaleString(),
-    id: id.value++,
+    id: Number(new Date()),
     likes: likes.value,
   });
   title.value = "";
@@ -49,20 +48,9 @@ const removePost = (id) => {
   console.log('deleted');
 }
 
-const title = ref("");
-const body = ref("");
-const isActive = ref(false);
-const likes = ref(0);
-const id = ref(0);
-
-const username = ref("Username")
-
 const sumOfLikes = computed(() => posts.value.reduce((acc, curr) => acc + curr.likes, 0))
 
-const sortPosts = () => {
-  isActive.value = !isActive.value;
-  isHotSorted.value = !isHotSorted.value;
-};
+const sortPosts = () => [isActive.value, isHotSorted.value] = [!isActive.value, !isHotSorted.value];
 
 const imageUrl = ref("/src/assets/img/profile-pic.jpg")
 
@@ -73,8 +61,6 @@ const onFileChange = (e) => {
   console.log(props.mageUrl);
   props.imageUrl = URL.createObjectURL(file)
 }
-
-console.log(posts.value);
 
 </script>
 
@@ -125,8 +111,8 @@ console.log(posts.value);
       <div class="posts__post post" v-if="!posts.length">There are no posts...</div>
       <template v-else>
         <TransitionGroup name="list">
-          <RouterLink :to="`/post/${post.id}`" class="posts__post post" v-for="post in posts" :key="post.id">
-            <div class="post__info">
+          <div class="posts__post post" v-for="post in posts" :key="post.id">
+            <RouterLink :to="`/post/${post.id}`"  class="post__info">
               <div class="post__info_image">
                 <img :src="imageUrl" alt="">
               </div>
@@ -139,14 +125,14 @@ console.log(posts.value);
                 </p>
                 <a @click.prevent="removePost(post.id)">delete nafig</a>
               </div>
-            </div>
+            </RouterLink>
             <div class="post__likes">
               <button class="btn post__likes-btn" @click="post.likes++">▲</button>
               <p>{{ post.likes }}</p>
               <p></p>
               <button class="btn post__likes-btn" @click="post.likes--">▼</button>
             </div>
-          </RouterLink>
+          </div>
         </TransitionGroup>
       </template>
 
