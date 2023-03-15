@@ -53,67 +53,54 @@
             float: right;
             background-color: var(--secondary);
         }
-    }
-    
+    }    
+}
 
-    .post {
+.post {
+    display: flex;
+    justify-content: space-between;
+    
+  
+    &__info {
         display: flex;
-        justify-content: space-between;
-        color: #fff;
-        text-decoration: none;
-      
-        &__info {
-            display: flex;
-            
-            
-            &_image {
-                padding-right: 10px;
-                img {
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 444px;
-                    object-fit: cover;
-                }
+        
+        
+        &_image {
+            padding-right: 10px;
+            img {
+                width: 40px;
+                height: 40px;
+                border-radius: 444px;
+                object-fit: cover;
             }
-
-            &_text {
-                word-wrap: break-word;
-                max-width: 590px;
-                width: 100%;
-            }
-
         }
 
-        &__likes {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        &_text {
+            word-wrap: break-word;
+            max-width: 590px;
+            width: 100%;
+        }
+
+    }
+
+    &__likes {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: var(--secondary);
+        &-btn {
+            padding: 0;
             color: var(--secondary);
-            &-btn {
-                padding: 0;
-                color: var(--secondary);
-                // background-color: #fff;
-            }
-        }
-        &__user-id {
-        }
-        &__id {
-        }
-        &__title {
-            
-        }
-        &__body {
+            // background-color: #fff;
         }
     }
-    
-    .pagination {
-        margin: 0 auto;
-        &__btn {
-
-        }
+    &__user-id {
     }
-    .btn {
+    &__id {
     }
-    
-    
+    &__title {
+        
+    }
+    &__body {
+    }
 }
