@@ -4,7 +4,7 @@ import { RouterLink } from "vue-router";
 import NavbarMenu from "../components/NavbarMenu.vue";
 import useLocalStorage from "../js/localStorage"
 
-const isHotSorted = ref(false);
+const isHotSorted = ref(useLocalStorage("isHotSorted", false));
 
 const isPopupOpened = ref(false);
 
@@ -12,7 +12,7 @@ const posts = ref([]);
 
 const title = ref("");
 const body = ref("");
-const isActive = ref(false);
+const isActive = ref(useLocalStorage("isActive", false));
 const likes = ref(0);
 
 const username = ref(useLocalStorage("username", "Username"));
@@ -122,9 +122,9 @@ const handleFileSelector = (file) =>
         <TransitionGroup name="list">
           <div class="posts__post post" v-for="post in posts" :key="post.id">
             <RouterLink :to="`/post/${post.id}`" class="post__info">
-              <div class="post__info_image">
-                <img :src="imageUrl" alt="" />
-              </div>
+              <RouterLink to="/profile" class="post__info_image">
+                <img :src="imageUrl" alt="Profile Picture" />
+              </RouterLink>
               <div class="post__info_text">
                 <p class="post__username">{{ username }}</p>
                 <span class="post__id"> {{ post.date }}</span>
