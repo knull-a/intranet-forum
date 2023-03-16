@@ -2,6 +2,7 @@
 import { ref, watch, computed, onMounted } from "vue";
 import { RouterLink } from "vue-router";
 import NavbarMenu from "../components/NavbarMenu.vue";
+import useLocalStorage from "../js/localStorage"
 
 const isHotSorted = ref(false);
 
@@ -13,10 +14,10 @@ const title = ref("");
 const body = ref("");
 const isActive = ref(false);
 const likes = ref(0);
-const username = ref("Username");
 
-const imageUrl = ref("/src/assets/img/profile-pic.jpg");
+const username = ref(useLocalStorage("username", "Username"));
 
+const imageUrl = ref(useLocalStorage("imageUrl", "/src/assets/img/profile-pic.jpg"));
 
 watch(
   posts,
@@ -24,22 +25,15 @@ watch(
   { deep: true }
 );
 
-watch(
-  imageUrl,
-  (userVal) => localStorage.setItem("imageUrl", JSON.stringify(userVal)),
-  { deep: true }
-);
 
-onMounted(
-  () => (posts.value = JSON.parse(localStorage.getItem("posts")) || [])
-);
+posts.value = JSON.parse(localStorage.getItem("posts")) || []
 
-onMounted(
-  () => (imageUrl.value = JSON.parse(localStorage.getItem("imageUrl")) || '/src/assets/img/profile-pic.jpg')
-);
+
 
 function addPost() {
-  if (!title.value.length || !body.value.length) alert("Post is empty!");
+  if (title.value.split(' ').length < 2) alert("Title should contain at least 2 words");
+  else if (body.value.split(' ').length < 3) alert("Body should contain at least 3 words") 
+  else if (title.value.length > 100) alert("Title is too long! (max 100 characters)")
   else {
     posts.value.unshift({
       title: title.value,
@@ -60,8 +54,7 @@ watch(isHotSorted, () =>
     : posts.value.sort((a, b) => b.id - a.id)
 );
 
-const removePost = (id) =>
-  (posts.value = posts.value.filter((post) => post.id != id));
+
 
 const sumOfLikes = computed(() =>
   posts.value.reduce((acc, curr) => acc + curr.likes, 0)
@@ -70,10 +63,12 @@ const sumOfLikes = computed(() =>
 const sortPosts = () =>
   ([isActive.value, isHotSorted.value] = [!isActive.value, !isHotSorted.value]);
 
+// const removePost = (id) => posts.value = posts.value.filter(post => id !== post.id)
+
 const handleFileSelector = (file) =>
   (imageUrl.value = URL.createObjectURL(file));
 
-console.log(imageUrl.value);
+
 </script>
 
 <template>
@@ -112,7 +107,7 @@ console.log(imageUrl.value);
             </form>
             <form>
               <label for="enter-body">Enter text:</label>
-              <textarea type="text" id="enter-body" v-model="body"></textarea>
+              <textarea type="text" id="enter-body" v-model="body" ></textarea>
             </form>
             <button class="btn posts__popup-add-button" @click="addPost">
               Add post
@@ -131,13 +126,15 @@ console.log(imageUrl.value);
                 <img :src="imageUrl" alt="" />
               </div>
               <div class="post__info_text">
-                <p>{{ username }}</p>
+                <p class="post__username">{{ username }}</p>
                 <span class="post__id"> {{ post.date }}</span>
                 <h2 class="post__title">{{ post.title }}</h2>
-                <p class="post__body">
+                <p v-if="post.body.length > 500" class="post__body">
+                  {{ post.body.slice(0, 500) }}<span>...</span>
+                </p>
+                <p v-else class="post__body">
                   {{ post.body }}
                 </p>
-                <a @click.prevent="removePost(post.id)">delete nafig</a>
               </div>
             </RouterLink>
             <div class="post__likes">
