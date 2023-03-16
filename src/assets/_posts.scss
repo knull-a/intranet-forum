@@ -1,6 +1,4 @@
 .posts {
-    width: 100%;
-    max-width: 590px;
     &__header {
         display: flex;
         justify-content: space-between;
@@ -59,6 +57,9 @@
 .post {
     display: flex;
     justify-content: space-between;
+    border-top: 1px solid rgba(21, 23, 24, 1);
+    border-bottom: 1px solid rgba(21, 23, 24, 1);
+    padding: 12px 0;
     
   
     &__info {
@@ -77,8 +78,16 @@
 
         &_text {
             word-wrap: break-word;
-            max-width: 590px;
+            max-width: 485px;
             width: 100%;
+        }
+
+        &_btn-delete {
+            color: red;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
 
     }
@@ -96,11 +105,21 @@
     }
     &__user-id {
     }
+
+    &__username {
+        color: var(--secondary);
+    }
     &__id {
+        
     }
     &__title {
         
     }
     &__body {
+        span 
+            &:hover {
+                text-decoration: none;
+            }
+        
     }
 }
