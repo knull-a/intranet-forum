@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import PostList from "../views/PostsList.vue"
+import PostList from "../components/PostsList.vue"
 import PostView from "../views/PostView.vue"
 import ProfileView from "../views/ProfileView.vue"
 
