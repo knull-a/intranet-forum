@@ -1,16 +1,12 @@
 <script setup>
 import { ref } from 'vue';
+
+import { RouterLink } from 'vue-router';
 const emit = defineEmits(["onFileChange", "update:modelValue", "fileSelected"])
 const props = defineProps(["modelValue", "imageUrl", "sumOfLikes"])
 
-const file = ref(null)
-
 const isProfileOpened = ref(false)
 
-function handleFileChange(e) {
-    file.value = e.target.files[0]
-    emit("fileSelected", file.value)
-}
 
 </script>
 
@@ -18,11 +14,10 @@ function handleFileChange(e) {
     <div class="header__logo">  
         <img src="../assets/img/logo.svg" alt="Logo">
     </div>
-    <input type="file" id="profile-pic" @change="handleFileChange" hidden>
     <div class="header__profile" @mouseover="isProfileOpened = true" @mouseleave="isProfileOpened = false" >
-        <label for="profile-pic" class="header__profile-photo">
+        <RouterLink to="/profile" class="header__profile-photo">
             <img :src="props.imageUrl" alt="Profile">
-        </label>
+        </RouterLink>
         <div class="header__profile-dropdown" v-if="isProfileOpened">
             <input 
              class="header__profile-username"

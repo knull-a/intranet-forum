@@ -1,11 +1,12 @@
 <script setup>
+import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import NavbarMenu from "../components/NavBarMenu.vue";
 const route = useRoute();
 const posts = JSON.parse(localStorage.getItem("posts")) || [];
-const imageUrl =
-  JSON.parse(localStorage.getItem("imageUrl")) ||
-  "/src/assets/img/profile-pic.jpg";
+const imageData = ref("/src/assets/img/profile-pic.jpg")
+const imageDataUrl = computed(() => localStorage.getItem('imageData') ? localStorage.getItem('imageData') : imageData.value);
+"/src/assets/img/profile-pic.jpg";
 const username = JSON.parse(localStorage.getItem("username")) || "Username";
 const post = posts.find((el) => el.id == route.params.id);
 
@@ -22,12 +23,12 @@ const removePost = () =>
 
 <template>
   <header class="header">
-    <NavbarMenu :image-url="imageUrl" v-model="username" />
+    <NavbarMenu :image-url="imageDataUrl" v-model="username" />
   </header>
   <div class="post">
     <div class="post__info">
       <div class="post__info_image">
-        <img :src="imageUrl" alt="Profile Picture" />
+        <img :src="imageDataUrl" alt="Profile Picture" />
       </div>
       <div class="post__info_text">
         <p class="post__username">{{ username }}</p>
@@ -36,7 +37,7 @@ const removePost = () =>
         <p class="post__body">
           {{ post.body }}
         </p>
-        
+
       </div>
     </div>
     <div class="post__likes">
@@ -51,6 +52,7 @@ const removePost = () =>
   &__title {
     margin-bottom: 5px;
   }
+
   &__info_btn-delete {
     margin-top: 5px;
     background-image: url('../assets/img/ico-delete.png');

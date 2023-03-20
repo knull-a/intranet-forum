@@ -17,7 +17,9 @@ const likes = ref(0);
 
 const username = ref(useLocalStorage("username", "Username"));
 
-const imageUrl = ref(useLocalStorage("imageUrl", "/src/assets/img/profile-pic.jpg"));
+const imageData = ref("/src/assets/img/profile-pic.jpg")
+
+const imageDataUrl = computed(() => localStorage.getItem('imageData') ? localStorage.getItem('imageData') : imageData.value);
 
 watch(
   posts,
@@ -74,7 +76,7 @@ const handleFileSelector = (file) =>
 <template>
   <header class="header">
     <NavbarMenu
-      :image-url="imageUrl"
+      :image-url="imageDataUrl"
       :sum-of-likes="sumOfLikes"
       @file-selected="handleFileSelector"
       v-model="username"
@@ -123,7 +125,7 @@ const handleFileSelector = (file) =>
           <div class="posts__post post" v-for="post in posts" :key="post.id">
             <RouterLink :to="`/post/${post.id}`" class="post__info">
               <RouterLink to="/profile" class="post__info_image">
-                <img :src="imageUrl" alt="Profile Picture" />
+                <img :src="imageDataUrl" alt="Profile Picture" />
               </RouterLink>
               <div class="post__info_text">
                 <p class="post__username">{{ username }}</p>
