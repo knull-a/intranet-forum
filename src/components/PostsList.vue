@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, computed, onMounted } from "vue";
 import { RouterLink } from "vue-router";
-import NavbarMenu from "./NavbarMenu.vue";
+import NavbarMenu from "./NavBarMenu.vue";
 import useLocalStorage from "../js/localStorage"
 
 const isHotSorted = ref(useLocalStorage("isHotSorted", false));

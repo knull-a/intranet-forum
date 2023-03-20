@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute } from "vue-router";
-import NavbarMenu from "../components/NavbarMenu.vue";
+import NavbarMenu from "../components/NavBarMenu.vue";
 const route = useRoute();
 const posts = JSON.parse(localStorage.getItem("posts")) || [];
 const imageUrl =
