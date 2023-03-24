@@ -16,7 +16,7 @@
     &__picture {
         position: absolute;
         top: 140px;
-        left: 150%;
+        left: 50%;
         transform: translateX(-50%);
 
         img {
@@ -24,7 +24,7 @@
             height: 120px;
             background: #282D33;
             border: 8px solid #000000;
-            border-radius: 999px;
+            border-radius: 999px;   
             object-fit: cover;
         }
     }
