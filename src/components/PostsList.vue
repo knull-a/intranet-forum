@@ -1,8 +1,8 @@
 <script setup>
-import { ref, watch, computed, onMounted } from "vue";
+import { ref, watch, computed, onMounted, provide } from "vue";
 import { RouterLink } from "vue-router";
 import NavbarMenu from "./NavBarMenu.vue";
-import useLocalStorage from "../js/localStorage"
+import useLocalStorage from "../composables/localStorage"
 
 const isHotSorted = ref(useLocalStorage("isHotSorted", false));
 
@@ -21,12 +21,20 @@ const imageData = ref("/src/assets/img/profile-pic.jpg")
 
 const imageDataUrl = computed(() => localStorage.getItem('imageData') ? localStorage.getItem('imageData') : imageData.value);
 
+const sumOfLikes = computed(() =>
+  posts.value.reduce((acc, curr) => acc + curr.likes, 0)
+);
+
 watch(
   posts,
   (userVal) => localStorage.setItem("posts", JSON.stringify(userVal)),
   { deep: true }
 );
 
+watch(
+  sumOfLikes,
+  (userVal) => localStorage.setItem("sumOfLikes", JSON.stringify(userVal)),
+);
 
 posts.value = JSON.parse(localStorage.getItem("posts")) || []
 
@@ -58,10 +66,6 @@ watch(isHotSorted, () =>
 
 
 
-const sumOfLikes = computed(() =>
-  posts.value.reduce((acc, curr) => acc + curr.likes, 0)
-);
-
 const sortPosts = () =>
   ([isActive.value, isHotSorted.value] = [!isActive.value, !isHotSorted.value]);
 
@@ -77,9 +81,6 @@ const handleFileSelector = (file) =>
   <header class="header">
     <NavbarMenu
       :image-url="imageDataUrl"
-      :sum-of-likes="sumOfLikes"
-      @file-selected="handleFileSelector"
-      v-model="username"
     />
   </header>
   <main>

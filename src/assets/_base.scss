@@ -59,3 +59,9 @@ a:link {
 label {
     cursor: pointer;
 }
+
+@media screen and (max-width: 400px) {
+    .wrapper {
+        width: 110%;
+    }
+}

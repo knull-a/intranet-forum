@@ -23,7 +23,7 @@ const removePost = () =>
 
 <template>
   <header class="header">
-    <NavbarMenu :image-url="imageDataUrl" v-model="username" />
+    <NavbarMenu :image-url="imageDataUrl" />
   </header>
   <div class="post">
     <div class="post__info">

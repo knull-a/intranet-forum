@@ -3,10 +3,11 @@
     justify-content: space-between;
     padding: 10px 0;
     &__logo {
-        transition: 0.5s;
+        
 
         &:hover {
-            transform: translateY(-100%);
+            transform: rotate(999deg);
+            transition: 15s;
         }
     }
 
