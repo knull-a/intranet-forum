@@ -3,8 +3,6 @@
     justify-content: space-between;
     padding: 10px 0;
     &__logo {
-        
-
         &:hover {
             transform: rotate(999deg);
             transition: 15s;
@@ -15,30 +13,52 @@
         position: relative;
         text-align: center;
         img {
-            max-width: 40px;
-            width: 100%;
-            height: 40px;
-            border-radius: 48px;
-            object-fit:cover;
+            
         }
         &-photo {
-            
             cursor: pointer;
+
+            &-img {
+                width: 40px;
+                height: 40px;
+                border-radius: 48px;
+                object-fit:cover;
+            }
+
+            &-dropdown {
+                width: 20px;
+                transition: all 0.3s;
+
+                &.active {
+                    rotate: 180deg;
+                }
+            }
         }
         &-dropdown {
+            padding: 5px;
+            transition: all 0.3s;
             background-color: var(--tertiary);
             position: absolute;
             top: 40px;
             left: -25px;
-            z-index: 100;
+            opacity: 0;
+            z-index: -1;
+
+            &.active {
+                opacity: 1;
+                z-index: 100;
+            }
         }
-        &-username{
+        .header__profile-username{
             text-align: center;
             max-width: 90px;
             background-color: transparent;
             border: 0;
             outline: none;
             color: var(--secondary);
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 }

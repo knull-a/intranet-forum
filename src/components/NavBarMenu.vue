@@ -20,12 +20,13 @@ const username = ref(useLocalStorage("username", "Username"));
     <RouterLink to="/" class="header__logo">  
         <img src="../assets/img/logo.svg" alt="Logo">
     </RouterLink>
-    <div class="header__profile" @mouseover="isProfileOpened = true" @mouseleave="isProfileOpened = false" >
-        <RouterLink to="/profile" class="header__profile-photo">
-            <img :src="props.imageUrl" alt="Profile">
-        </RouterLink>
-        <div class="header__profile-dropdown" v-if="isProfileOpened">
-            <p class="header__profile-username">{{ username }}</p>
+    <div class="header__profile">
+        <div class="header__profile-photo" @click="isProfileOpened = !isProfileOpened, e.preventDefault()">
+            <img class="header__profile-photo-img" :src="props.imageUrl" alt="Profile">
+            <img class="header__profile-photo-dropdown" :class="[isProfileOpened ? 'active' : '']" src="../assets/img/ico-dropdown.svg">
+        </div>
+        <div class="header__profile-dropdown" :class="[isProfileOpened ? 'active' : '']">
+            <RouterLink to="/profile" class="header__profile-username">{{ username }}</RouterLink>
             <p>Reputation: {{ sumOfLikes }}</p>
         </div>
     </div>
