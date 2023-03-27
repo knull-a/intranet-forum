@@ -69,8 +69,6 @@ watch(isHotSorted, () =>
 const sortPosts = () =>
   ([isActive.value, isHotSorted.value] = [!isActive.value, !isHotSorted.value]);
 
-// const removePost = (id) => posts.value = posts.value.filter(post => id !== post.id)
-
 const handleFileSelector = (file) =>
   (imageUrl.value = URL.createObjectURL(file));
 

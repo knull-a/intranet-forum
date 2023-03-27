@@ -29,11 +29,20 @@
         }
     }
 
-    &__reputation {
+    &__stats {
         position: absolute;
         top: 65px;
         left: 125px;
         display: flex;
+        gap: 10px;
+        img {
+            width: 20px;
+        }
+        a {
+            display: flex;
+            align-items: center;
+            gap: 2.5px; 
+        }
     }
 
     &__info {

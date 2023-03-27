@@ -1,9 +1,11 @@
 <script setup>
 import { ref, computed, inject } from 'vue';
+import { RouterLink } from 'vue-router';
 import useLocalStorage from '../composables/localStorage'
 
 const sumOfLikes = useLocalStorage("sumOfLikes", 0)
 
+const posts = useLocalStorage("posts", [])
 
 const username = ref(useLocalStorage("username","Username"))
 const profession = ref(useLocalStorage("Profession", "Hobby or Profession"))
@@ -69,10 +71,18 @@ const checkForLength = () => about.value.length > 99 ? alert("Text is too long! 
             </label>
         </div>
         <div class="profile__picture">
-            <div class="profile__reputation">
-                <img src="../assets/img/ico-rep.svg" alt="Reputation">
-                {{ sumOfLikes }}
+            <div class="profile__stats">
+                <RouterLink to="/" class="profile__reputation">
+                    <img src="../assets/img/ico-rep.svg" alt="Reputation">
+                    {{ sumOfLikes }}
+                </RouterLink>
+                
+                <RouterLink to="/" class="profile__posts">
+                    <img src="../assets/img/ico-posts.svg" alt="Posts">
+                    {{ posts.length }}
+                </RouterLink>
             </div>
+            
             <input @change="handleImageChange" type="file" id="profile-pic" accept="image/png, image/jpeg, image/jpg, image/gif" hidden>
             <label for="profile-pic">
                 <img class="profile__picture-img" :src="imageDataUrl" alt="Profile Picture">
@@ -81,10 +91,7 @@ const checkForLength = () => about.value.length > 99 ? alert("Text is too long! 
         
     </div>
     <div class="profile__info">
-        <div class="profile__username-box">
-            <input class="profile__username input" v-model="username" maxlength="14"> 
-            
-        </div>
+        <input class="profile__username input" v-model="username" maxlength="14"> 
         <input class="profile__profession input" v-model="profession" maxlength="17">
         <textarea rows="3" @input="checkForLength" spellcheck="false" class="profile__about input" v-model="about" maxlength="100"></textarea>
         <div class="profile__links">
